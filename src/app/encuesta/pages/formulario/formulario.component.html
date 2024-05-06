@@ -1,0 +1,27 @@
+<div class="grid p-3">
+  <div class="col-12 mt-5 md:col-6 md:col-offset-3 md:mt-8">
+      <form #form="ngForm" [formGroup]="myForm" class="flex flex-column" (ngSubmit)="onSave()" autocomplete="off">
+          <h1 class="col-offset-5">Encuesta</h1>
+          <mat-form-field>
+              <mat-label>Correo Electrónico</mat-label>
+              <input matInput type="email" placeholder="Correo Electrónico" formControlName="email">
+              <mat-error *ngIf="isValidField('email')">{{ getFieldError('email') }}</mat-error>
+          </mat-form-field>
+          <h4>Estilos Musicales</h4>
+          <mat-form-field>
+              <mat-label>Estilo</mat-label>
+              <mat-select formControlName="estilo_musical">
+                  <mat-option *ngFor="let estiloMusical of estilosMusicales" [value]="estiloMusical.id" required>
+                      {{estiloMusical.desc}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+          <mat-error *ngIf="isValidField('estilo_musical')">Seleccione una opción.</mat-error>
+          <button mat-button mat-flat-button color="primary">
+              <mat-icon>save</mat-icon>
+              Enviar
+          </button>
+      </form>
+  </div>
+</div>
+
