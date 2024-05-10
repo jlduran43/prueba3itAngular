@@ -5,6 +5,8 @@ import { EstiloMusical } from '../../interfaces/estiloMusical';
 import { EncuestaService } from '../../service/encuesta.service';
 import { Encuesta } from '../../interfaces/encuesta';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-formulario',
@@ -12,12 +14,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './formulario.component.css'
 })
 export class FormularioComponent {
+  err: string = '';
   @ViewChild('form') form: any;
 
   constructor(private fb: FormBuilder,
               private validatorService: ValidatorsService,
               private encuestaService: EncuestaService,
-              private snackbar: MatSnackBar,){}
+              private snackbar: MatSnackBar,
+              private router: Router){}
 
   public myForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.pattern(this.validatorService.emailPattern)], ],
@@ -61,18 +65,18 @@ export class FormularioComponent {
 
   onSave(): void{
     if(this.myForm.valid){
-      this.encuestaService.addEncuesta(this.currentEncuesta)
-        .subscribe(encuesta => {
-
+        this.encuestaService.addEncuesta(this.currentEncuesta)
+        .subscribe(data => {
+          this.router.navigate(['encuesta/resultados']);
             this.showSnackbar('Encuesta creada');
           }
         )
       this.form.resetForm();
-    }
+      }
   }
 
   showSnackbar( message: string ):void {
-    this.snackbar.open( message, 'done', {
+    this.snackbar.open( message, 'Exitosamente', {
       duration: 2500,
     })
   }

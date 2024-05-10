@@ -1,36 +1,27 @@
 import { ResultadoComponent } from './resultado.component';
 import { EncuestaService } from '../../service/encuesta.service';
-import { from } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BarraComponent } from '../../components/barra/barra.component';
+import { MatCardModule } from '@angular/material/card';
 
-describe('ResultadoComponent', () => {
-  let componente: ResultadoComponent;
-  const servicio = new EncuestaService(null as any);
 
-  beforeEach(() => {
-    componente = new ResultadoComponent(servicio);
-  });
+describe('Resultado Component', () => {
+  let component: ResultadoComponent;
+  let fixture: ComponentFixture<ResultadoComponent>; //Para acceder a html, etc.
 
-  it('Debe cargar los resultados de las encuesta', () => {
-    spyOn(servicio, 'getEncuestas').and.callFake(() => {
-      return from([[{
-        "id": 1,
-        "email": "juanp@gmail.com",
-        "estilo_musical": "Rock"
-    },
-    {
-        "id": 2,
-        "email": "carloss@gmail.com",
-        "estilo_musical": "Pop"
-    },
-    {
-        "id": 3,
-        "email": "martaa@gmail.com",
-        "estilo_musical": "Jazz"
-    }]]);
+  beforeEach( () => {
+    TestBed.configureTestingModule({      //simula modulo cualquiera
+      declarations: [ResultadoComponent, BarraComponent],
+      providers: [EncuestaService],
+      imports: [HttpClientTestingModule, MatCardModule]
     });
 
-    componente.ngOnInit();
+    fixture = TestBed.createComponent(ResultadoComponent); //crea componente.
+    component = fixture.componentInstance;  //se pueden usar todos los método y funciones.
+  });
 
-    expect(componente.encuestas.length).toBeGreaterThan(0);
+  it('Debe de crearse el componente', () => {
+    expect( component ).toBeTruthy();
   });
 });

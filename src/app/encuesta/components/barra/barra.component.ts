@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Chart, ChartData, ChartType, registerables, ChartEvent} from 'chart.js';
+import { Component, Input } from '@angular/core';
+import { Chart, ChartType, registerables, ChartEvent} from 'chart.js';
 import { EncuestaService } from '../../service/encuesta.service';
 import { Router } from '@angular/router';
 import { Encuesta } from '../../interfaces/encuesta';
@@ -27,9 +27,6 @@ export class BarraComponent{
           this.result[value] = (this.result[value] || 0) + 1;
         })
 
-        console.log(Object.values(this.result));
-
-
          this.doughnutChartData = {
           labels: this.doughnutChartLabels,
           datasets: [{
@@ -37,6 +34,8 @@ export class BarraComponent{
             backgroundColor: ['#6857E6','#009FEE','#F02059', '#A053056'],
           },
         ],
+
+
         };
      });
   }

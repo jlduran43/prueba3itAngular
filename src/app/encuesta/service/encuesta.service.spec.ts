@@ -1,16 +1,38 @@
-import { TestBed } from '@angular/core/testing';
-
+import { of } from 'rxjs';
 import { EncuestaService } from './encuesta.service';
 
 describe('EncuestaService', () => {
   let service: EncuestaService;
+  let httpClientSpy: { post: jasmine.Spy};
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(EncuestaService);
+    httpClientSpy = jasmine.createSpyObj('HttpClient', ['post']);
+    service = new EncuestaService(httpClientSpy as any);
   });
 
-  it('should be created', () => {
+  it('Debe crearse correctamente', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('Debe guardar correctamente una encuesta', (done: DoneFn) => {
+    const mockEncuesta = {
+      "id": 1,
+      "email": "juanp@gmail.com",
+      "estilo_musical": "Rock"
+    }
+
+    const mockResultado = {
+      "id": 1,
+      "email": "juanp@gmail.com",
+      "estilo_musical": "Rock"
+    }
+
+    httpClientSpy.post.and.returnValue(of(mockResultado));
+
+    service.addEncuesta(mockEncuesta)
+      .subscribe( resultado => {
+        expect(resultado).toEqual(mockResultado);
+        done();
+      });
   });
 });
